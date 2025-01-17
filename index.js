@@ -28,30 +28,33 @@ app.get('/stocks', async (req, res) => {
 app.get('/stocks/:ticker', async (req, res) => {
     try {
         let ticker = req.params.ticker;
-        if (typeof ticker === 'string') {
+        if (!ticker) {
             return res.status(400).json({message: "Ticker should be a string."});
         }
         let result = await getStockByTicker(ticker);
-        if (result.stock.length === 0) {
+        if (!result.stock) {
             return res.status(404).json({message: "No Stock Found!"})
         }
+        return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({error: error.message});
     }
-})
+});
 
 app.post('/trades/new', async (req, res) => {
     try {
         let newTrade = req.body;
         let error = validateTrade(newTrade);
         if (error) res.status(400).json({message: error});
-        let result = addNewTrade(newTrade);
+        let result = await addNewTrade(newTrade);       // without `await` // {}
         res.status(201).json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-})
+});
 
-app.post('/trades/new')
+app.use((req, res) => {
+    res.status(404).json({ message: "Endpoint not found!" });
+});     // Default Endpoint If required page not found!
 
 module.exports = { app };

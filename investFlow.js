@@ -15,11 +15,12 @@ async function getAllStocks() {
 }
 
 async function getStockByTicker(ticker) {
-    return {stock: stocks.find((stock) => stock.ticker === ticker)};
+    let stock = stocks.find((stock) => stock.ticker === ticker);
+    return stock ? {stock} : {stock : null};
 }
 
 async function addNewTrade(newTrade) {
-    trades.push({id: trades.length + 1, ...newTrade});
+    trades.push({tradeId: trades.length + 1, ...newTrade});
     return {newTrade: newTrade};
 }
 
@@ -30,7 +31,7 @@ function validateTrade(newTrade) {
     if (!newTrade.quantity || typeof newTrade.quantity !== 'number' || newTrade.quantity < 0) {
         return "Quantity is required and should be a positive number.";
     }
-    if (!newTrade.tradeType || typeof newTrade.tradeType !== 'string' || newTrade.tradeType === 'buy' || newTrade.tradeType === 'sell') {
+    if (!newTrade.tradeType || typeof newTrade.tradeType !== 'string' || !['buy', 'sell'].includes(newTrade.tradeType)) {
         return "Trade Type is required and should be a 'buy' or 'sell' string."
     }
     if (!newTrade.tradeDate || isNaN(Date.parse(newTrade.tradeDate))) {     // When you apply parse method over 'Date' object and if it is valid then output would be returned in number
