@@ -252,7 +252,7 @@ describe("API testing", () => {
             }
         };
 
-        addNewTrade.getResolvedValue(mockNewTrade);
+        addNewTrade.mockResolvedValue(mockNewTrade);
 
         let result = await request(server).post('/trades/new').send({
             "stockId": 1,

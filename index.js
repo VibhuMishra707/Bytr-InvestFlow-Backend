@@ -45,11 +45,11 @@ app.post('/trades/new', async (req, res) => {
     try {
         let newTrade = req.body;
         let error = validateTrade(newTrade);
-        if (error) res.status(400).json({message: error});
+        if (error) return res.status(400).json({message: error});
         let result = await addNewTrade(newTrade);       // without `await` // {}
-        res.status(201).json(result);
+        return res.status(201).json(result);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 });
 
