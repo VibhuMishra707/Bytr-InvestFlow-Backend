@@ -15,13 +15,14 @@ async function getAllStocks() {
 }
 
 async function getStockByTicker(ticker) {
-    let stock = stocks.find((stock) => stock.ticker === ticker);
+    let stock = stocks.find((stock) => stock.ticker === ticker);        // If 'stock' not found by ticker then `find` method returns undefined object if found it will return the only the first 'object' not 'list'. That's why using return Null if 'stock' is not there
     return stock ? {stock} : {stock : null};
 }
 
 async function addNewTrade(newTrade) {
-    trades.push({tradeId: trades.length + 1, ...newTrade});
-    return {newTrade: newTrade};
+    const insertNewTrade = {tradeId: trades.length + 1, ...newTrade};
+    trades.push(insertNewTrade);
+    return {newTrade: insertNewTrade};
 }
 
 function validateTrade(newTrade) {
