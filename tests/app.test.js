@@ -37,6 +37,7 @@ describe("Function testing", () => {
         jest.clearAllMocks();
     })
 
+// ----- Test 6: Mock getAllStocks Function -----
     it("getAllStocks should return all the stocks", async () => {
         const mockStocks = {
             "stocks": [
@@ -90,6 +91,7 @@ describe("Function testing", () => {
             ]
         });
     });
+// ----- Test 6: Ends -----
 
     it("getStockByTicker should return stock By Ticker", async () => {
         const mockStock = {
@@ -118,6 +120,7 @@ describe("Function testing", () => {
         });
     });
 
+// ----- Test 7: Mock Add Trade Function (Async) -----
     it("addNewTrade should return newTrade which is inserted", async () => {
         const mockNewTrade = {
             "newTrade": {
@@ -155,6 +158,7 @@ describe("Function testing", () => {
         });
     });  
 });
+// ----- Test 7: Ends -----
 
 // ------------------------------------ //
 //             API Testing              //
@@ -164,6 +168,7 @@ describe("API testing", () => {
         jest.clearAllMocks();
     });
 
+// ----- Test 1: Get All Stocks -----
     it("GET API /stocks Should retrive All Stocks", async () => {
         const mockStocks = {
             "stocks": [
@@ -216,7 +221,9 @@ describe("API testing", () => {
             ]
         });
     });
+// ----- Test 1: Ends -----
 
+// ----- Test 2: Get Stock by Ticker -----
     it("GET API /stocks/GOOGL Should retrive stock by Ticker", async () => {
         const mockStock = {
             "stock": {
@@ -241,7 +248,9 @@ describe("API testing", () => {
             }
         });
     });
+// ----- Test 2: Ends -----
 
+// ----- Test 3: Add a New Trade -----
     it("POST API /trades/new Should retrieve new trade added", async() => {
         const mockNewTrade = {
             "newTrade": {
@@ -272,6 +281,7 @@ describe("API testing", () => {
         });
     });
 });
+// ----- Test 3: Ends -----
 
 // ------------------------------------ //
 //          API Error Testing           //
@@ -288,6 +298,7 @@ describe("API Error Testing", () => {
         expect(result.status).toBe(404);
     });
 
+// ----- Test 5: Input Validation for Add Trade -----
     it("GET API /stocks/MSFT should return 404 if no stock found", async() => {
         getStockByTicker.mockResolvedValue({ stock : null });
 
@@ -295,7 +306,7 @@ describe("API Error Testing", () => {
         expect(result.statusCode).toBe(404);
     });
 });
-
+// ----- Test 5: Ends -----
 
 // ------------------------------------ //
 //        API Validation Testing        //
@@ -322,6 +333,7 @@ describe("API Data Validation Testing", () => {
         })
     });
 
+// ----- Test 4: Error Handling for Get Stock by Invalid Ticker -----
     it("Should return 400 for not passing stockId", async () => {
         let response = await request(server).post('/trades/new').send({
             "quantity": 15,
@@ -331,6 +343,7 @@ describe("API Data Validation Testing", () => {
           expect(response.statusCode).toBe(400);
           expect(response.body.message).toEqual("Stock Id is required and should be a positive number.");
     });
+// ----- Test 4: Ends -----
 
     it("Should return 400 for not passing quantity", async() => {
         let response = await request(server).post('/trades/new').send({
