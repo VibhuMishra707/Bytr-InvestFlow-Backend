@@ -26,7 +26,7 @@ async function addNewTrade(newTrade) {
 }
 
 function validateTrade(newTrade) {
-    if (!newTrade.stockId || typeof newTrade.stockId !== 'number' || newTrade.stockId < 0) {
+    if (!newTrade.stockId || typeof newTrade.stockId !== 'number' || newTrade.stockId <= 0) {
         return "Stock Id is required and should be a positive number.";
     }
     if (!newTrade.quantity || typeof newTrade.quantity !== 'number' || newTrade.quantity < 0) {

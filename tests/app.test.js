@@ -13,7 +13,7 @@ jest.mock('../investFlow.js', () => ({
 
     getAllStocks: jest.fn(),        // Mock only this function
     getStockByTicker: jest.fn(),
-    validateTrade: jest.fn(),
+    validateTrade: jest.fn(() => null),
     addNewTrade: jest.fn()
 }));
 
@@ -303,6 +303,23 @@ describe("API Error Testing", () => {
 describe("API Data Validation Testing", () => {
     beforeEach(() => {
         jest.clearAllMocks();
+
+        // mockImplementation is required for to all test cases being passed.
+        validateTrade.mockImplementation((newTrade) => {
+            if (!newTrade.stockId || typeof newTrade.stockId !== 'number' || newTrade.stockId <= 0) {
+                return "Stock Id is required and should be a positive number.";
+            }
+            if (!newTrade.quantity || typeof newTrade.quantity !== 'number' || newTrade.quantity < 0) {
+                return "Quantity is required and should be a positive number.";
+            }
+            if (!newTrade.tradeType || typeof newTrade.tradeType !== 'string' || !['buy', 'sell'].includes(newTrade.tradeType)) {
+                return "Trade Type is required and should be a 'buy' or 'sell' string."
+            }
+            if (!newTrade.tradeDate || isNaN(Date.parse(newTrade.tradeDate))) {
+                return "Trade date is required and should be 'yyyy-mm-dd' format.";
+            }
+            return null;
+        })
     });
 
     it("Should return 400 for not passing stockId", async () => {
@@ -316,7 +333,7 @@ describe("API Data Validation Testing", () => {
     });
 
     it("Should return 400 for not passing quantity", async() => {
-        let response = (await request(server).post('/trades/new')).send({
+        let response = await request(server).post('/trades/new').send({
             "stockId": 1,
             "tradeType": "buy",
             "tradeDate": "2024-08-08"
