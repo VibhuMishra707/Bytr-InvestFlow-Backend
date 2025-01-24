@@ -13,7 +13,7 @@ jest.mock('../investFlow.js', () => ({
 
     getAllStocks: jest.fn(),        // Mock only this function
     getStockByTicker: jest.fn(),
-    validateTrade: jest.fn(() => null),
+    validateTrade: jest.fn(),
     addNewTrade: jest.fn()
 }));
 
